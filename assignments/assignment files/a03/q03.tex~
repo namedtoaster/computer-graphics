@@ -1,0 +1,71 @@
+
+\SOLUTION
+
+(a) 
+$A$ has a size of 2-by-3 while $C$ has a size of 1-by-2.
+$A$ and $C$ have different sizes.
+Therefore $A + C$ is undefined.
+
+ANSWER: \boxed{ERROR}
+
+(b)
+\begin{align*}
+H + A &= \begin{bmatrix}
+         1 & 2 & -3 \\
+         3 & 2 & -1 
+         \end{bmatrix}
+         + 
+         \begin{bmatrix}
+         1 & 2 & 3 \\
+         4 & 5 & 6 
+         \end{bmatrix}
+         \\
+      &= \begin{bmatrix}
+         1 + 1     & 2 + ???   & (-3) + ??? \\
+         ??? + ??? & ??? + ??? & ??? + ??? 
+         \end{bmatrix}
+         \\
+      &= \begin{bmatrix}
+         2 & ??? & ??? \\
+         ??? & ??? & ???  
+         \end{bmatrix}
+\end{align*}
+ANSWER: 
+\boxed{
+\begin{bmatrix}
+2 & ??? & ??? \\
+??? & ??? & ???
+\end{bmatrix}
+}
+
+(c)
+ANSWER: \boxed{???}
+
+(d)
+ANSWER: \boxed{???}
+
+(e)
+ANSWER: \boxed{???}
+
+(f)
+ANSWER: \boxed{???}
+
+(g) First we simplify algebraically.
+We have
+\begin{align*}
+            2A + 2M + E &= 3E - 2H + A           \\
+\THEREFORE  2M          &= (3E - 2H + A) - (???) \\
+                        &= ???E + ???H + ???A    \\
+\THEREFORE  M           &= ???                   \tag{1} \\
+\end{align*}
+Now we substitute the matrix values of $A$, $E$, and $H$ into (1) to get
+\begin{align*}
+M &= ??? \\
+  &= ???
+\end{align*}
+
+ANSWER: \boxed{???}
+
+(h)
+ANSWER: \boxed{???}
+

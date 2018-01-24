@@ -1,0 +1,291 @@
+#include <iostream>
+#include "Mat.h"
+
+std::ostream & operator<<(std::ostream & cout, const Mat & matrix)
+{
+    for (int i = 0; i < matrix.rowsize(); i++)
+    {
+        cout << '[';
+        for (int j = 0; j < matrix.colsize(); j++)
+        {
+            cout << matrix(i, j);
+            if (j != matrix.colsize() - 1) cout << ' ';
+        }
+        cout << ']'; if (i != matrix.rowsize() - 1) cout << '\n';
+    }
+    return cout;
+}
+
+
+Mat operator*(int a, const Mat & b)
+{
+    Mat prod(b);
+
+    for (int i = 0; i < prod.rowsize(); i++)
+    {
+        for (int j = 0; j < b.colsize(); j++)
+        {
+            prod(i, j) = (prod(i, j) * a);
+        }
+    }
+
+    return prod;
+}
+
+
+int len(const Mat & num)
+{
+    if (num.rowsize() == 1 || num.colsize() == 1)
+    {
+        if (num.rowsize() == 1) return num.colsize();
+        return num.rowsize();
+    }
+    else
+        std::cout << "Error. _rowsize isn't 0 and _columnsize isn't 1" << std::endl;
+}
+
+
+int & Mat::operator()(const int row_index, const int col_index) const
+{
+    return _p[row_index][col_index];
+}
+
+
+Mat & Mat::operator=(const Mat & num)
+{
+    this->~Mat();
+    _rowsize = num.rowsize();
+    _colsize = num.colsize();
+
+    allocate_arrays();
+
+    for (int i = 0; i < _rowsize; i++)
+    {
+        for (int j = 0; j < _colsize; j++)
+            _p[i][j] = num(i, j);
+    }
+
+    return *this;
+}
+
+
+Mat & Mat::operator+=(const Mat & num)
+{
+    for (int i = 0; i < _rowsize; i++)
+    {
+        for (int j = 0; j < _colsize; j++)
+            this->_p[i][j] += num(i, j);
+    }
+
+    return *this;
+}
+
+
+Mat Mat::operator+(const Mat & num) const
+{
+    Mat sum(_rowsize, _colsize);
+    
+    return(sum += num);
+}
+
+
+Mat & Mat::operator-=(const Mat & num)
+{
+    for (int i = 0; i < _rowsize; i++)
+    {
+        for (int j = 0; j < _colsize; j++)
+            this->_p[i][j] = this->_p[i][j] - num(i, j);
+    }
+
+    return *this;
+}
+
+
+Mat Mat::operator-(const Mat & num) const
+{
+    Mat sum(_rowsize, _colsize);
+    
+    return (sum -= num);
+}
+
+
+Mat Mat::operator*(const Mat & num) const
+{
+    Mat prod(_rowsize, num.colsize());
+
+    for (int i = 0; i < prod.rowsize(); i++)
+    {
+        for (int j = 0; j < prod.colsize(); j++)
+        {
+            for (int k = 0; k < _colsize; k++)
+                prod(i, j) += _p[i][k] * num(k, j);
+        }
+    }
+
+    return prod;
+}
+
+
+Mat Mat::operator*(const int & num) const
+{
+    for (int i = 0; i < _rowsize; i++)
+    {
+        for (int j = 0; j < _colsize; j++)
+            _p[i][j] *= num;
+    }
+
+    return *this;
+}
+
+
+void Mat::insert(int row_index, int col_index, int value) const
+{
+    _p[row_index][col_index] = value;
+}
+
+
+Mat Mat::inv() const
+{
+    Mat inverse;
+    int order = this->rowsize();
+    
+    double det = 1.0 / CalcDeterminant(*this, order);
+
+    Mat minor(order - 1, order - 1);
+
+    for (int j = 0; j < order; j++)
+    {
+        for (int i = 0; i < order; i++)
+        {
+            GetMinor(*this, minor, j, i, order);
+            inverse(i, j) = det * CalcDeterminant(minor, order - 1);
+
+            if ((i + j) % 2 == 1)
+                inverse(i, j) = -inverse(i, j);
+        }
+    }
+
+    return inverse;
+}
+
+
+double det(const Mat & mat)
+{
+    // order must be >= 0
+    // stop the recursion when matrix is a single element
+    int order = mat.rowsize();
+    
+    if( order == 1 )
+        return mat(0, 0);
+    
+    // the determinant value
+    double detr = 0;
+    
+    // allocate the cofactor matrix
+    Mat minor(order - 1, order - 1);
+    
+    for(int i = 0; i < order; i++ )
+    {
+        // get minor of element (0,i)
+        GetMinor(mat, minor, 0, i, order);
+        
+        // the recusion is here!
+        detr += (i % 2 == 1 ? -1.0 : 1.0) * mat(0, i) * CalcDeterminant(minor, order-1);
+    }
+    
+    return detr;
+}
+
+
+// matrix inversioon
+// the result is put in Y
+void MatrixInversion(Mat A, int order, Mat Y)
+{
+    // get the determinant of a
+    double det = 1.0 / CalcDeterminant(A,order);
+    
+    // memory allocation
+    int * temp = new int[(order - 1) * (order - 1)];
+    Mat minor(order - 1, order - 1);
+    //int ** minor = new int * [order - 1];
+    
+    //for(int i = 0; i < order - 1; i++)
+    //  minor[i] = temp + (i * (order - 1));
+    
+    for(int j = 0; j < order; j++)
+    {
+        for(int i = 0; i < order; i++)
+        {
+            // get the co-factor (matrix) of A(j,i)
+            GetMinor(A, minor, j, i, order);
+            Y(i, j) = det * CalcDeterminant(minor, order - 1);
+            
+            if((i + j) % 2 == 1)
+                Y(i, j) = -Y(i, j);
+        }
+    }
+    
+    // release memory
+    //delete [] minor[0];
+    delete [] temp;
+}
+
+
+// calculate the cofactor of element (row,col)
+int GetMinor(Mat src, Mat dest, int row, int col, int order)
+{
+    // indicate which col and row is being copied to dest
+    int colCount = 0, rowCount = 0;
+    
+    for(int i = 0; i < order; i++ )
+    {
+        if( i != row )
+        {
+            colCount = 0;
+            
+            for(int j = 0; j < order; j++ )
+            {
+                // when j is not the element
+                if( j != col )
+                {
+                    dest(rowCount, colCount) = src(i, j);
+                    colCount++;
+                }
+            }
+            rowCount++;
+        }
+    }
+    return 1;
+}
+
+
+// Calculate the determinant recursively.
+double CalcDeterminant(Mat mat, int order)
+{
+    // order must be >= 0
+    // stop the recursion when matrix is a single element
+    if( order == 1 )
+        return mat(0, 0);
+    
+    // the determinant value
+    double det = 0;
+    
+    // allocate the cofactor matrix
+    Mat minor(order - 1, order - 1);
+    //double **minor;
+    //minor = new double*[order-1];
+    
+    //for(int i=0;i<order-1;i++)
+    //minor[i] = new double[order - 1];
+    for(int i = 0; i < order; i++ )
+    {
+        // get minor of element (0,i)
+        GetMinor(mat, minor, 0, i, order);
+        
+        // the recusion is here!
+        det += (i % 2 == 1 ? -1.0 : 1.0) * mat(0, i) * CalcDeterminant(minor, order-1);
+        //det += pow( -1.0, i ) * mat[0][i] * CalcDeterminant( minor,order-1 );
+    }
+    
+    return det;
+}

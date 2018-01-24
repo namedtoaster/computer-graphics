@@ -1,0 +1,9 @@
+// File: Box.cpp
+#include <iostream>
+#include "Box.h"
+
+int main()
+{
+  Box box(1, 1, 2, 3);
+  return 0;
+}

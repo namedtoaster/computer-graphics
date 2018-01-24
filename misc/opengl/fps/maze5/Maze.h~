@@ -1,0 +1,54 @@
+#ifndef MAZE_H
+#define MAZE_H
+
+#include <stack>
+
+using namespace std;
+
+#include "Room.h"
+#include "Constants.h"
+
+class Maze{
+public:
+    Maze(int, int, float, float, float);
+    ~Maze();
+
+    void generate_maze();
+    void draw();
+
+    void set_tx(float);
+    void set_ty(float);
+    void set_tz(float);
+
+    float get_tx();
+    float get_ty();
+    float get_tz();
+
+    void set_rotate(float);
+    float get_rotate();
+
+    void set_forwardt(float);
+    float get_forwardt();
+
+    void set_sidet(float);
+    float get_sidet();
+
+    float get_row();
+    float get_col();
+
+    bool get_visited(int, int);
+private:
+    int ROWS;
+    int COLS;
+    float translatex;
+    float translatey;
+    float translatez;
+    float rotatemovement;
+    float forwardmovement;
+    float sidemovement;
+    Room ** rooms;
+    stack <Room>Stack;
+    void remove_walls(int, int);
+};
+
+#endif

@@ -1,0 +1,9 @@
+#include <GL/glut.h>
+
+Player::Player()
+{
+}
+
+void Player::draw()
+{
+}

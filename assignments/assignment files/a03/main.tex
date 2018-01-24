@@ -1,0 +1,833 @@
+\input{myassignmentpreamble.tex}
+\renewcommand\AUTHOR{David Campbell}
+\renewcommand\COURSENAME{Computer Graphics}
+\renewcommand\COURSESHORTNAME{Computer Graphics}
+\renewcommand\COURSENUMBER{CISS380}
+\renewcommand\TITLE{Assignment 3}
+\begin{document}
+
+\newcommand\vv[2]{ \langle #1, #2 \rangle }
+\topmatter
+
+{\bf Objectives}
+
+This assignment involves vector and basic matrix computations.
+
+You must submit your work as a printed pdf document.
+You must generate the pdf using \LaTeX.
+Most of you have already done a lot of \LaTeX.
+The important thing is that you must use the latest 
+Fedora virtual machine because I've reorganized a lot of my 
+\LaTeX\ libraries and setup files on the newest 
+Fedora virtual machine to make using \LaTeX\ easier.
+
+The following is only for those of you who have not taken classes 
+with me where there is mathematical writing using
+\LaTeX\:
+\begin{enumerate}
+\item For each assignment, you will be given a zipped file.
+      Unzip the file in your virtual machine.
+\item The unzipped folder contains a \verb!makefile!.
+      When you run the \verb!makefile! (if you're using the GUI, you just
+      double-click on the \verb!makefile!; if you're using the  
+      Linux bash shell, you type \verb!make!), a pdf document 
+      will be (re)generated.
+      The name of this file is \verb!main.pdf!.
+      You're looking at it right now.
+\item In your unzipped folder, you will see the main \LaTeX\ file:
+      \verb!main.tex!.
+      The only thing you need to modify for this file is to change the 
+      \verb!\AUTHOR! to your name.
+      Currently \verb!\AUTHOR! is set to \lq\lq Dr. Yihsiang Liow''.
+      This is near the top of \verb!main.tex! (usually the second line.)
+      When you open the file you will see what I mean.
+      After changing my name to yours, run the \verb!makefile! and
+      your name will appear in the bottom left of every page of this 
+      pdf document.
+\item You will need to edit the \LaTeX\ files 
+      \verb!q01.tex!,
+      \verb!q02.tex!,
+      \verb!q03.tex!, etc.
+      The file \verb!q01.tex! is the \LaTeX\ file for 
+      your answer to question Q1. 
+      When you are ready to typeset your answer for Q1,
+      you edit \verb!q01.tex! and run the \verb!makefile!
+      and view the updated \verb!main.pdf!.
+      The new \verb!main.pdf! will contain your work for Q1.
+      When you run the \verb!makefile!, \verb!main.tex! will collect up
+      all your answers in \verb!q01.tex!, \verb!q02.tex!, etc. to build
+      \verb!main.pdf!.
+\item Print your final \verb!main.pdf!, staple the printouts, and submit
+      them to me. 
+\item Sloppy work, regardless of correctness of answer, will get a 0.
+      For instance if your work is not stapled or not stapled in the 
+      right order, you will get a 0 immediately.
+\end{enumerate}
+
+\newpage
+
+{\bf VECTORS}
+
+Here's the story so far: You've been learning about real numbers
+for a long time. Here's a real number:
+\[
+42
+\]
+and here's another
+\[
+3.1415
+\]
+You can add, subtract, multiply, and divide real numbers 
+(well ... hang on there ... not quite ... you can't divide by zero, right?)
+
+Then you learned about 
+2-dimensional (2-d) vectors which 
+are slightly more complicated since there are
+two real numbers in each vector.
+Here's a 2-d vector:
+\[
+\vv{42}{3.1419}
+\]
+For 2-d vectors, you can add, subtract, multiply-by-real numbers, 
+and do dot products between them:
+\begin{align*}
+\vv{1}{2} + \vv{3}{4} &= \vv{1+3}{2+4} \\
+\vv{1}{3} - \vv{2}{-4} &= \vv{1-2}{3-(-4)} \\
+5 \cdot \vv{1}{3} &= \vv{5 \cdot 1}{5 \cdot 3} \\
+\vv{3}{-2} \cdot \vv{4}{3} &= 3\cdot 4 + (-2) \cdot 3 \\
+\end{align*}
+and remember that the important thing about the dot product is this:
+\[
+\vec{u} \cdot \vec{v} = \| u \| \| v \| \cos \theta
+\]
+which ties up the two vectors with the angle between them.
+
+Here's a bunch of drill problems:
+
+\newpage
+
+Q1. Compute the following
+\begin{enumerate}
+\item[(a)] $ \vv{3}{1/2} + \vv{-5/2}{3/4} $
+\item[(b)] $\vv{3/2}{1/2} + \vv{5/3}{4} + \vv{3}{0}$
+\item[(c)] $5\vv{3}{3/2} - 7\vv{-5}{4}$
+\item[(d)] $\frac{1}{2} \vv{3}{1/2} + 7 \vv{-2}{3} - 3 \vv{0}{-14/3}$
+\item[(e)] $\frac{1}{2} \vv{3}{1/2} \cdot 7 \vv{-2}{3}$
+\item[(f)] What is $\cos\theta$ where $\theta$ is the angle between
+$\vv{3}{1/2}$ and $\vv{2}{3}$
+\item[(g)] What is $\cos\theta$ where $\theta$ is the angle between
+$135235\cdot \vv{3}{1/2}$ and $234545621\cdot \vv{2}{3}$
+[HINT: The big multiples are red herrings.]
+\item[(h)] What is $\theta$ (in radians) where $\theta$ is the angle between
+$\vv{7}{-3.4}$ and $\vv{4.2}{5.6}$.
+You can use your calculator to give an approximation.
+\item[(i)] What is $\theta$ (in degrees) where $\theta$ is the angle between
+$\vv{7.2}{7.2}$ and $\vv{-5.66}{5.66}$.
+You must give an exact value.
+\end{enumerate}
+
+\input{q01.tex}
+
+\newpage
+{\bf MATRICES}
+
+To move on, we now consider blocks of numbers called matrices.
+Here's a 2-by-2 matrix:
+\[
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix}
+\]
+and here's a 3-by-5 matrix:
+\[
+\begin{bmatrix}
+1 & 2 & 2.5 & -1.2 & 7 \\
+0 & 4.2 & 2.5 & -1.2 & 6 \\
+0 & 0 & 2.5 & -1.2 & 4.2 \\
+\end{bmatrix}
+\]
+For that second big matrix, we say that the 
+row size is 3 and the column size is 5.
+A 2-d vector is just a 2-by-1 matrix:
+\[
+\vv{1}{-5} \longrightarrow
+\begin{bmatrix}
+1 \\
+-5
+\end{bmatrix}
+\]
+I won't explain here why we need matrices to help out with computer
+graphics.
+I'll explain in detail during lectures.
+But they are extremely important.
+In fact their importance is beyond computer
+graphics. Without matrices, you won't have quantum mechanics.
+I'm not kidding. 
+(OK ... alright ... you don't care about quantum
+mechanics ... {\it whatever!})
+Right now I just want to show you how to add, subtract, 
+multiply-by-real-number, and multiply a matrix with another.
+So this section is more about following instructions (or algorithms).
+
+If the row size is the same as the column size, the matrix
+is called a square matrix (duh).
+Something like this
+\[
+\begin{bmatrix}
+1 \\
+-5
+\end{bmatrix}
+\]
+is called a column vector while something like this
+\[
+\begin{bmatrix}
+1 & -5
+\end{bmatrix}
+\]
+is called a row vector.
+
+It's handy to refer to values by their positions.
+So for the following matrix:
+\[
+\begin{bmatrix}
+1 & 2 & 2.5 & -1.2 & 7 \\
+0 & 4.2 & 2.5 & -1.2 & 6 \\
+0 & 0 & 2.5 & -1.2 & 4.2 \\
+\end{bmatrix}
+\]
+the entry (or value) at row 2, column 5 is 6, or we say that the 
+(2, 5) entry/value is 6.
+For matrices, the row and column numbering starts with 1 (not 0).
+
+\newpage
+
+Q2. Unless otherwise stated, all answers must be exact.
+
+Let
+\[
+A
+= 
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+B
+= 
+\begin{bmatrix}
+0.1 & -0.2 \\
+-1.2 & 2.4 \\
+-1.2 & 2.4 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+C
+= 
+\begin{bmatrix}
+\frac{2}{3} & \frac{4}{7} \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+D
+= 
+\begin{bmatrix}
+3.14159 \\
+\end{bmatrix}
+\]
+
+(a) What is the row size of $A$?
+
+(b) What is the column size of $A$?
+
+(c) What is the row size of $B$?
+
+(d) What is the column size of $B$?
+
+(e) What is the row size of $C$?
+
+(f) What is the column size of $C$?
+
+(g) What is the row size of $D$?
+
+(h) What is the column size of $D$?
+
+(i) What is the $(1, 3)$ entry of $A$?
+
+(j) What is the $(3, 1)$ entry of $B$?
+
+\input{q02.tex}
+
+\newpage
+{\bf MATRIX ADDITION, SUBTRACTION, AND SCALAR MULTIPLICATION}
+
+Adding, subtracting, and multiplying-with-real-numbers is easy.
+By the way multiplication-by-real-number for matrices
+is also called scalar multiplication, just like for vectors.
+
+For adding and subtracting two matrices, first of all they must have
+the same size. If they have different sizes, then all bets are off
+and the operation is not defined.
+If they have the same sizes, then you just operate on the values
+based on their position in the matrices.
+For instance, here's a 3-by-2 addition:
+\[
+\begin{bmatrix}
+a & b \\
+c & d.\\
+e & f \\
+\end{bmatrix}
++
+\begin{bmatrix}
+A & B \\
+C & D.\\
+E & F \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+a+A & b+B \\
+c+C & d+D.\\
+e+E & f+F \\
+\end{bmatrix}
+\]
+and a 2-by-8 addition:
+\[
+\begin{bmatrix}
+a & b & c & d\\
+e & f & g & h \\
+\end{bmatrix}
++
+\begin{bmatrix}
+A & B & C & D\\
+E & F & G & H \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+a+A & b+B & c+C & d+D\\
+e+E & f+F & g+G & h+H \\
+\end{bmatrix}
+\]
+And of course you can't add a 3-by-2 with a 2-by-8:
+\[
+\begin{bmatrix}
+a & b \\
+c & d.\\
+e & f \\
+\end{bmatrix}
++
+\begin{bmatrix}
+A & B & C & D\\
+E & F & G & H \\
+\end{bmatrix}
+= \text{WHADDA?!?}
+\]
+Subtraction is similar: do it position-wise.
+Here's a subtraction for 3-by-4 matrices:
+\[
+\begin{bmatrix}
+a & b & c & d \\
+e & f & g & h \\
+i & j & k & l \\
+\end{bmatrix}
+-
+\begin{bmatrix}
+A & B & C & D\\
+E & F & G & H \\
+I & J & K & L \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+a-A & b-B & c-C & d-D\\
+e-E & f-F & g-G & h-H \\
+i-I & j-J & k-K & l-L \\
+\end{bmatrix}
+\]
+Multiply-by-real-number or scalar multiplication is easy too.
+Here's a multiplication of a real number with a 2-by-2:
+\[
+r \cdot 
+\begin{bmatrix}
+a & b \\
+c & d.\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+r \cdot a & r \cdot b \\
+r \cdot c & r \cdot d.\\
+\end{bmatrix}
+\]
+
+\newpage
+
+Q3. Now to exercise your brain for adding, subtracting, and scalar 
+multiplication of matrices.
+For those expressions where the operations do not make sense,
+write ERROR.
+Unless otherwise stated, all answers must be exact.
+
+
+Let 
+\[
+A
+= 
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+B
+= 
+\begin{bmatrix}
+0.1 & -0.2 \\
+-1.2 & 2.4 \\
+-1.2 & 2.4 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+C
+= 
+\begin{bmatrix}
+\frac{2}{3} & \frac{4}{7} \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+D
+= 
+\begin{bmatrix}
+3.14159 \\
+\end{bmatrix}
+\]
+\[
+E
+= 
+\begin{bmatrix}
+0.33 & -1 & -2.5 \\
+0.7 & 2.5 & 1.23
+\end{bmatrix}
+, 
+\hspace{1cm}
+F
+= 
+\begin{bmatrix}
+2.7182 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+G
+= 
+\begin{bmatrix}
+1.1 & -0.2 \\
+1.2 & -0.4 \\
+1.3 & -0.8 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+H
+= 
+\begin{bmatrix}
+1 & 2 & -3 \\
+3 & 2 & -1 \\
+\end{bmatrix}
+\]
+
+(a) Compute $A + C$.
+
+(b) Compute $H + A$.
+
+(c) Compute $2B - 3G$.
+
+(d) Compute $2B + H$.
+
+(e) Compute $B + H$.
+
+(f) Compute $2D + 3F$.
+
+(g) Compute $M$ if $2A + 2M + E = 3E - 2H + A$.
+
+(h) Compute $N$ if $2D + 2N + F = 3N - D + 3C$.
+
+\input{q03.tex}
+
+\newpage
+
+{\bf MATRIX MULTIPLICATION}
+
+Now let me show you how to multiply matrices.
+This is the one that is a little harder.
+So I'll look at specific sized matrices instead of talking in general.
+
+You can multiply two matrices $M$ and $N$ only when the 
+column size of $M$ is the same as the row size of $N$.
+You'll see why in a bit.
+Here's the multiplication of a 2-by-3 with a 3-by-4:
+\[
+\begin{bmatrix}
+a & b & c \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & C & D \\
+E & F & G & H \\
+I & J & K & L  
+\end{bmatrix}
+= ?
+\]
+First of all here are the sizes:
+\[
+(\text{2-by-3}) \cdot (\text{3-by-4}) = (\text{?-by-?})
+\]
+Notice that the column size of the first (i.e. 3)
+matches the row size of the second (i.e. 3).
+The resulting matrix will have a row size equal to the row size of the 
+first matrix:
+\[
+(\text{\underline{2}-by-3}) \cdot (\text{3-by-4}) = (\text{\underline{2}-by-?})
+\]
+and the column size of the result is the column size of the second matrix:
+\[
+(\text{2-by-3}) \cdot (\text{3-by-\underline{4}}) = (\text{2-by-\underline{4}})
+\]
+So the product looks like this:
+\[
+\begin{bmatrix}
+a & b & c \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & C & D \\
+E & F & G & H \\
+I & J & K & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & ? \\
+? & ? & ? & ?
+\end{bmatrix}
+\]
+Here's how you compute the result at row 1, column 1 on the right-hand-side:
+From the left-hand-side,
+you take row 1 of the 1st matrix and column 1 of the 2nd 
+matrix and treat them like vectors and do a dot product.
+\[
+\begin{bmatrix}
+\underline{a} & \underline{b} & \underline{c} \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+\underline{A} & B & C & D \\
+\underline{E} & F & G & H \\
+\underline{I} & J & K & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+aA + bE + cI & ? & ? & ? \\
+? & ? & ? & ?
+\end{bmatrix}
+\]
+This is the reason why the column size of the first matrix
+must match the row size of the second.
+
+Now moving right, we want to compute the row 1, column 2 value
+of the result. You don't change row 1 of the first matrix,
+but you move to the right on the second matrix and look at column 2
+of that matrix. Do the dot product thing again and you get the
+value at row 1, column 2 on the right:
+\[
+\begin{bmatrix}
+\underline{a} & \underline{b} & \underline{c} \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & \underline{B} & C & D \\
+E & \underline{F} & G & H \\
+I & \underline{J} & K & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & aB + bF + cJ & ? & ? \\
+? & ? & ? & ?
+\end{bmatrix}
+\]
+and of course you should guess immediately that the row 1, column 3
+value of the result must be like this:
+\[
+\begin{bmatrix}
+\underline{a} & \underline{b} & \underline{c} \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & \underline{C} & D \\
+E & F & \underline{G} & H \\
+I & J & \underline{K} & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & aC + bG + cK & ? \\
+? & ? & ? & ?
+\end{bmatrix}
+\]
+and row 1, column 4 of the result is
+\[
+\begin{bmatrix}
+\underline{a} & \underline{b} & \underline{c} \\
+d & e & f 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & C & \underline{D} \\
+E & F & G & \underline{H} \\
+I & J & K & \underline{L}  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & aD + bH + cL \\
+? & ? & ? & ?
+\end{bmatrix}
+\]
+
+Now what? 
+We've been only moving the column on the second matrix on the left-hand-side.
+And we've reached the end of that second matrix.
+Now we move our eye on the row of the first matrix down and look at row 2.
+While doing that, we move our eye on the last column of the second matrix
+and look at the first column again.
+And as for the resulting matrix, we jump to the second row.
+This is what we get:
+\[
+\begin{bmatrix}
+a & b & c \\
+\underline{d} & \underline{e} & \underline{f} 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+\underline{A} & B & C & D \\
+\underline{E} & F & G & H \\
+\underline{I} & J & K & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & ?\\
+dA + eE + fI & ? & ? & ?
+\end{bmatrix}
+\]
+Now you move your eye on the second matrix from the 1st column to the second
+and you'll get the row 2, column 2 value:
+\[
+\begin{bmatrix}
+a & b & c \\
+\underline{d} & \underline{e} & \underline{f} 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & \underline{B} & C & D \\
+E & \underline{F} & G & H \\
+I & \underline{J} & K & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & ?\\
+? & dB + eF + fJ & ? & ?
+\end{bmatrix}
+\]
+Next you get the row 2, column 3 of the resulting value like this:
+\[
+\begin{bmatrix}
+a & b & c \\
+\underline{d} & \underline{e} & \underline{f} 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & \underline{C} & D \\
+E & F & \underline{G} & H \\
+I & J & \underline{K} & L  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & ?\\
+? & ? & dC + eG + fK & ?
+\end{bmatrix}
+\]
+and finally this:
+\[
+\begin{bmatrix}
+a & b & c \\
+\underline{d} & \underline{e} & \underline{f} 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+A & B & C & \underline{D} \\
+E & F & G & \underline{H} \\
+I & J & K & \underline{L}  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+? & ? & ? & ?\\
+? & ? & ? & dD + eH + fL 
+\end{bmatrix}
+\]
+
+So if you want to compute that $(i,j)$ entry 
+(i.e. entry at row $i$ and column $j$) of the product of
+matrix $M$ and $N$, then you need to compute the 
+dot product of row $i$ of $M$ with column $j$ of $N$.
+If the column size of $M$ and row size of $N$ are both $s$,
+and we write $M_{i,j}$ for the $(i,j)$ entry of $M$ and
+$N_{i,j}$ for the entry of $N$, then the 
+$(i,j)$ entry of $MN$ is
+\[
+M_{i,1}N_{1,j} + 
+M_{i,2}N_{2,j} + \cdots +
+M_{i,s}N_{s,j} 
+\]
+
+By the way, given two matrices $M$ and $N$,
+if $MN$ and $NM$ are both defined, do you see that they must be
+square matrix of the same size? 
+(As the famous comedian Victor Borge use to say:
+\lq\lq I'll give you a little more time on that one.'')
+
+\newpage
+
+
+
+Q4.
+For those expressions where the operations do not make sense,
+write ERROR.
+Unless otherwise stated, all answers must be exact.
+
+Let 
+\[
+A
+= 
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+B
+= 
+\begin{bmatrix}
+0.1 & -0.2 \\
+-1.2 & 2.4 \\
+-1.2 & 2.4 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+C
+= 
+\begin{bmatrix}
+\frac{2}{3} & \frac{4}{7} \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+D
+= 
+\begin{bmatrix}
+3.14159 \\
+\end{bmatrix}
+\]
+\[
+E
+= 
+\begin{bmatrix}
+0.33 & -1 & -2.5 \\
+0.7 & 2.5 & 1.23
+\end{bmatrix}
+, 
+\hspace{1cm}
+F
+= 
+\begin{bmatrix}
+2.7182 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+G
+= 
+\begin{bmatrix}
+1.1 & -0.2 \\
+1.2 & -0.4 \\
+1.3 & -0.8 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+H
+= 
+\begin{bmatrix}
+1 & 2 & -3 \\
+3 & 2 & -1 \\
+\end{bmatrix}
+\]
+\[
+I
+= 
+\begin{bmatrix}
+0.3 & 2.1 & -2.1 \\
+0.2 & 2.5 & 3.7 \\
+0.1 & 3.2 & 5.2 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+J
+= 
+\begin{bmatrix}
+2.7182 \\
+\end{bmatrix}
+, 
+\hspace{1cm}
+K
+= 
+\begin{bmatrix}
+120.5 \\
+225.0 \\
+174.4
+\end{bmatrix}
+, 
+\hspace{1cm}
+L
+= 
+\begin{bmatrix}
+1 & 2 \\
+-1 & -2 \\
+\end{bmatrix}
+\]
+
+(a) Compute the size of $EB$.
+
+(b) Compute the size of $IK$.
+
+(c) Compute the size of $KI$.
+
+(d) Compute the size of $CL$.
+
+(e) Compute the size of matrix $X$ if you know that $IX$ 
+is defined and has a size of 3-by-1.
+
+(f) Compute $AB$.
+
+(g) Compute $AE$.
+
+(h) Compute $AG$.
+
+(i) Compute $GE$.
+
+(j) Compute $HGA$.
+
+(k) Compute $DC$.
+
+(l) Find two matrices (as simple as possible) $M$ and $N$ such that
+$MN$ and $NM$ and are defined but $MN \neq NM$.
+[HINT: A pair of 2-by-2 would do.]
+
+\input{q04.tex}
+
+\end{document}
+

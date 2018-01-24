@@ -1,0 +1,25 @@
+#include <iostream>
+#include "Mat.h"
+
+int main()
+{
+    int x[] = {1, 2, 3, 4, 5, 6};
+    Mat< int > a(2, 3, x);
+    std::cout << a << std::endl;
+    Mat< int > b(2, 3, x);
+    //MatrixInversion(a, a.rowsize(), b);
+    try
+    {
+        Mat c = a * b;
+    }
+    catch (SizeError e)
+    {
+        std::cout << "Size Error" << std::endl;
+    }
+    catch (IndexError e)
+    {
+        std::cout << "Index Error" << std::endl;
+    }
+
+    return 0;
+}

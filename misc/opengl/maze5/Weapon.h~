@@ -1,0 +1,70 @@
+#ifndef WEAPON_H
+#define WEAPON_H
+
+void draw_pieces()
+{
+    float piece3_color[] = {0.504, 0.535, 0.504};
+    piece3.setcolor(piece3_color);
+    
+    piece1.draw();
+    piece2.draw();
+    piece3.draw();
+    piece4.draw();
+    piece5.draw();
+}
+
+void draw_hands()
+{
+    float hand_color[] = {0.53, 0.27, 0.07};
+    hand1.setcolor(hand_color);
+    hand2.setcolor(hand_color);
+    
+    hand1.draw();
+    hand2.draw();
+}
+
+void draw_magazine()
+{
+    float magazine_color[] = {0.53, 0.27, 0.07};
+    magazine.setcolor(magazine_color);
+    
+    magazine.draw();
+}
+
+void draw_gunbarrel()
+{
+    float gunbarrel_color[] = {0.504, 0.535, 0.504};
+    gunbarrel.setcolor(gunbarrel_color);
+    
+    gunbarrel.draw();
+}
+
+void draw_sight()
+{
+    float sight_color[] = {0.0, 0.0, 0.0};
+    sight.setcolor(sight_color);
+    
+    sight.draw();
+}
+
+void draw_gun()
+{
+    glPushMatrix();
+
+    // Scale the weapon to make it small enough
+    glScalef(0.2, 0.2, 0.2);
+
+    // Move the gun to the bottom right of the screen
+    glTranslatef(0.8, -1.6, 0.1);
+
+    // Draw each piece of the weapon
+    draw_gunbarrel();
+    draw_sight();
+    draw_pieces();
+    draw_hands();
+    draw_magazine();
+
+    glPopMatrix(); 
+}
+
+#endif

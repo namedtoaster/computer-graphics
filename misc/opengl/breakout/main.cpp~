@@ -1,0 +1,272 @@
+#include <GL/glut.h>
+#include <fstream>
+#include <iostream>
+#include <cstring>
+
+#include "Model.h"
+#include "Surface.h"
+#include "Light.h"
+
+using namespace std;
+
+const double LEFT = -7.0;
+const double RIGHT = 7.0;
+
+float eyex;
+float eyey;
+float eyez;
+
+float lightx;
+float lighty;
+float lightz;
+
+float sunx;
+float suny;
+float sunz;
+
+float blockz = 0.0;
+float paddlex = 0.0;
+
+int width = 640;
+int height = 680;
+
+const float eye_color[] = {1.0, 1.0, 1.0};
+const float text_color[] = {0.0, 0.0, 1.0};
+const float floor_color[] = {0.0, 0.4, 0.0};
+const float table_color[] = {0.3, 0.2, 0.0};
+const float side_color[] = {0.0, 0.0, 1.0};
+const float block_color[] = {1.0, 0.0, 1.0};
+const float paddle_color[] = {1.0, 0.0, 0.0};
+
+Model table("table.raw");
+Model desert("desert.raw");
+
+void draw_table()
+{
+    table.settx(-0.2);
+    table.setsx(26);
+    table.setsy(20);
+    table.setsz(20);
+
+    table.setcolor(table_color);
+
+    table.draw();
+}
+
+void draw_desert()
+{
+    //desert.setsz(3.0);
+    //desert.setsx(3.0);
+
+    //desert.settx(-20.0);
+    //desert.setty(-16.0);
+    //desert.settz(-15.0);
+    
+    desert.setcolor(floor_color);
+
+    desert.draw();
+}
+
+void draw_blocks()
+{
+    glPushMatrix();
+    
+    // Color blocks
+
+    glColor3fv(block_color);
+    
+    glTranslatef(0.0, 10.7, blockz);
+    glScalef(14.0, 0.01, 4.0);
+    glutSolidCube(1);
+
+    glPopMatrix();
+}
+
+void draw_paddle()
+{
+    glPushMatrix();
+    
+    // Color the paddle
+
+    glColor3fv(paddle_color);
+
+    glTranslatef(paddlex, 10.7, 13.5 - 0.2);
+    glScalef(4.0, 0.5, 0.5);
+    glutSolidCube(1);
+
+    glPopMatrix();
+}
+
+void draw_sides()
+{
+    glPushMatrix();
+
+    // Color the sides
+    glColor3fv(side_color);
+    
+    glPushMatrix();
+    glTranslatef(-7.0, 10.7, 0.0);
+    glScalef(0.01, 0.01, 2.7);
+    glutSolidCube(10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(7.0, 10.7, 0.0);
+    glScalef(0.01, 0.01, 2.7);
+    glutSolidCube(10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 10.7, 13.5);
+    glRotatef(90.0, 0.0, 1.0, 0.0);
+    glScalef(0.01, 0.01, 1.4);
+    glutSolidCube(10);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 10.7, -13.5);
+    glRotatef(90.0, 0.0, 1.0, 0.0);
+    glScalef(0.01, 0.01, 1.4);
+    glutSolidCube(10);
+    glPopMatrix();
+
+    draw_blocks();
+
+    draw_paddle();
+    
+    glPopMatrix();
+}
+
+void draw()
+{
+    draw_sides();
+    draw_table();
+    draw_desert();
+}
+
+
+void init()
+{    
+    eyex = 1.49012e-09f;
+    eyey = 19.0f;
+    eyez = 18.0f;
+    
+    lightx = -64.0;
+    lighty = 20.5f;
+    lightz = -16.0f;
+
+    sunx = -506;
+    suny = -36.5;
+    sunz = -116;
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    float fovy = 90.0; 
+    float aspect = 1.0;  
+    float zNear = 1.0; 
+    float zFar = 500.0;  
+    gluPerspective(fovy, aspect, zNear, zFar);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyex, eyey, eyez, 
+              0.0, 0.0, -1.0, 
+              0.0, 1.0, 0.0);    
+
+    glViewport(0, 0, width, height);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+}
+
+void display()
+{
+    // Set up light
+
+    Light house_light(GL_LIGHT0, lightx, lighty, lightz);
+    house_light.set_up_light();
+
+    // Set up camera
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyex, eyey, eyez,
+              0.0, 0.25, 0.0,
+              0.0, 1.0, 0.0);    
+
+    // Begin drawing
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Set up surface material
+
+    Surface surface1;
+    surface1.set_surface();
+
+    // Set light source radius
+    house_light.set_sc_r(10);
+    // Draw light source
+    //house_light.draw_source(true);
+
+    draw();
+
+    glColor3fv(text_color);
+    glRasterPos2i(1, 18);
+    char s[] = "David Campbell - CISS 380";
+    for (int i = 0; i < strlen(s); i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
+    }
+   
+    glutSwapBuffers();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+    switch(key)
+    {
+        case 'a': eyex -= 0.1; break;
+        case 'd': eyex += 0.1; break;
+        case 'w': eyey += 0.1; break;
+        case 's': eyey -= 0.1; break;
+        case '1': eyez += 0.1; break;
+        case '2': eyez -= 0.1; break;
+
+        // Controls the position of light source
+        case 'o': lightx -= 1.0; break;
+        case 'p': lightx += 1.0; break;
+        case 'k': lighty -= 1.0; break;
+        case 'l': lighty += 1.0; break;
+        case 'n': lightz -= 1.0; break;
+        case 'm': lightz += 1.0; break;
+
+        // Move the blocks back and forth
+
+        case 'z': paddlex -= 0.5; break;
+        case 'x': paddlex += 0.5; break;
+    }
+    display();
+}
+
+int main(int argc, char ** argv)
+{
+    glutInit(&argc, argv);    
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(width, height);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutCreateWindow("test");
+
+    glEnable(GL_LIGHTING); // Enable lighting in general
+    //glEnable(GL_LIGHT0);   // Enable light source GL_LIGHT0
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+                           // (There are 8 light sources.)    
+    glShadeModel(GL_SMOOTH); // Third run: GL_FLAT
+    glEnable(GL_DEPTH_TEST); // for hidden surface removal
+    glEnable(GL_NORMALIZE);  // normalize vectors for proper shading
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+
+    init();
+    glutMainLoop();
+  
+    return 0;
+}
