@@ -38,13 +38,49 @@ int height = 600;
 
 void display();
 
-void init()
+void init(int* argc, char** argv)
 {
+  // Init the scene, to include non-player objects
+  initScene();
+
+  // Init the players, i.e. enemy robots and main player
+  initPlayers();
+
+  // Init display info
+  initDisplay();
+  
+  glutInit(argc, argv);    
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(width, height);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutCreateWindow("test");
+
+    // glEnable(GL_LIGHTING); // Enable lighting in general
+    // ^Creates shadows and whatnot
+    //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    //glEnable(GL_COLOR_MATERIAL);
+                           // (There are 8 light sources.)    
+    //glShadeModel(GL_SMOOTH); // Third run: GL_FLAT
+    glEnable(GL_DEPTH_TEST); // for hidden surface removal
+    //glEnable(GL_NORMALIZE);  // normalize vectors for proper shading
+
+    //glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutSpecialFunc(specialkeyboard);
+    glutIdleFunc(move_robots);
+    glutMouseFunc(mouse);
+
+  
     // See the random number generator
     srand(time(NULL));
 
     // Generate the maze
     maze.generate_maze();
+
+    // Initialize objects
+    
+
+    // Initialize game players
 
     // Place all of the robots into the maze
     place_robots();
@@ -168,30 +204,29 @@ void specialkeyboard(int key, int x, int y)
     display();
 }
 
+void displayMe(void)
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glBegin(GL_POLYGON);
+        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3f(0.5, 0.0, 0.0);
+        glVertex3f(0.5, 0.5, 0.0);
+        glVertex3f(0.0, 0.5, 0.0);
+    glEnd();
+    glFlush();
+}
+
 int main(int argc, char ** argv)
 {
-    glutInit(&argc, argv);    
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(width, height);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-    glutCreateWindow("test");
+  /*glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_SINGLE);
+  glutInitWindowSize(300, 300);
+  glutInitWindowPosition(100, 100);
+  glutCreateWindow("Hello world :D");
+  glutDisplayFunc(displayMe);*/
 
-    glEnable(GL_LIGHTING); // Enable lighting in general
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-    glEnable(GL_COLOR_MATERIAL);
-                           // (There are 8 light sources.)    
-    glShadeModel(GL_SMOOTH); // Third run: GL_FLAT
-    glEnable(GL_DEPTH_TEST); // for hidden surface removal
-    glEnable(GL_NORMALIZE);  // normalize vectors for proper shading
-
-    glutDisplayFunc(display);
-    glutKeyboardFunc(keyboard);
-    glutSpecialFunc(specialkeyboard);
-    glutIdleFunc(move_robots);
-	glutMouseFunc(mouse);
-
-    init();
-    glutMainLoop();
+  init(&argc, argv);
   
-    return 0;
+  glutMainLoop();
+  return 0;
 }

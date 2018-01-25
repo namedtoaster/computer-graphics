@@ -41,10 +41,12 @@ CC=g++
 # in the current directory. The only thing you need to do is create a
 # rule that links all object files together as shown below
 
-src = $(wildcard *.cpp)
+src = $(wildcard src/*.cpp)
 obj = $(src:.cpp=.o)
 
 LDFLAGS = -lGL -lglut -lGLU
+IDIR =../include
+CFLAGS=-I$(IDIR)
 
 # See
 # https://www.gnu.org/software/make/manual/make.html#Automatic-Variables

@@ -184,7 +184,7 @@ int main(int argc, char ** argv)
 	glutMouseFunc(mouse);
 
     init();
-    glutMainLoop();
+    //glutMainLoop();
   
     return 0;
 }

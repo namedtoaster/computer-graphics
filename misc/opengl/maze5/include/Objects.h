@@ -1,4 +1,8 @@
 #include <GL/glut.h>
+#include <stack>
+#include <vector>
+#include <cstring>
+
 #include "Prototypes.h"
 #include "Light.h"
 #include "Model.h"
@@ -34,6 +38,81 @@ Model magazine("magazine.raw");
 float transguny = 0.8f;
 float transgunz = -1.6f;
 float transgunx = 0.1f;
+
+class Object{
+ public:
+  Object(const char* file) { filename = file; }
+
+  float & settx(const float&);
+  float & setty(const float&);
+  float & settz(const float);
+
+  float & setrx(const float&);
+  float & setry(const float&);
+  float & setrz(const float&);
+
+  float & setsx(const float&);
+  float & setsy(const float&);
+  float & setsz(const float&);
+
+  void setcolor(const float[]);
+  float *get_color();
+
+  void set_filename(const char*);
+
+ private:
+  //const char* name;
+  const char* filename;
+  float color[3];
+
+  int lines;
+  float * vertices[3][4];
+
+  float translatex;
+  float translatey;
+  float translatez;
+
+  float rotatex;
+  float rotatey;
+  float rotatez;
+
+  float scalex;
+  float scaley;
+  float scalez;
+};
+
+class Scene{
+ public:
+  Scene();
+
+  Scene(float a1 = 0.1, float a2 = 0.1, float a3 = 0.1, float a4 = 0.0,
+	float d1 = 1.0, float d2 = 1.0, float d3 = 1.0, float d4 = 1.0,
+	float s1 = 1.0, float s2 = 1.0, float s3 = 1.0, float s4 = 1.0,
+	float sh = 50.0)
+    {
+      /*ambient[] = {0.1, 0.1, 0.1, 0.0};
+      ambient[0] = a1; ambient[1] = a2; ambient[2] = a3; ambient[3] = a4;
+      diffuse[0] = d1; diffuse[1] = d2; diffuse[2] = d3; diffuse[3] = d4;
+      specular[0] = s1; specular[1] = s2; specular[2] = s3; specular[3] = s4;
+      shininess[0] = sh;*/
+    };
+    
+  void set_ground()
+    {
+      glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
+      glMaterialfv(GL_FRONT, GL_AMBIENT, diffuse);
+      glMaterialfv(GL_FRONT, GL_AMBIENT, specular);
+      glMaterialfv(GL_FRONT, GL_AMBIENT, shininess);
+      }
+    
+ private:
+  stack <Player> players;
+  stack <Object> objects;
+  float ambient[4];
+  float diffuse[4];
+  float specular[4];
+  const GLfloat* shininess;
+};
 
 void draw_pieces()
 {
@@ -380,17 +459,17 @@ void draw_text()
 	// Draw the number of rounds
 	glColor3fv(text_color);
     glRasterPos3f(xpos, ypos, zpos);    
-    for (int i = 0; i < strlen(s); i++)
+    for (int i = 0; i < std::strlen(s); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, s[i]);
     }
     glRasterPos3f(xpos, ypos - GLfloat(0.006), zpos);
-    for (int i = 0; i < strlen(t); i++)
+    for (int i = 0; i < std::strlen(t); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, t[i]);
     }
     glRasterPos3f(xpos, ypos - GLfloat(0.012), zpos);
-    for (int i = 0; i < strlen(u); i++)
+    for (int i = 0; i < std::strlen(u); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, u[i]);
     }
@@ -400,17 +479,17 @@ void draw_text()
 	// Draw the crosshair
 	glColor3fv(cross_hair_color);
 	glRasterPos3f(xposch, yposch, zposch);
-    for (int i = 0; i < strlen(ch1); i++)
+    for (int i = 0; i < std::strlen(ch1); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, ch1[i]);
     }
 	glRasterPos3f(xposch - 0.0095, yposch - 0.005, zposch);
-    for (int i = 0; i < strlen(ch2); i++)
+    for (int i = 0; i < std::strlen(ch2); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, ch2[i]);
     }
 	glRasterPos3f(xposch, yposch - 0.01, zposch);
-    for (int i = 0; i < strlen(ch1); i++)
+    for (int i = 0; i < std::strlen(ch1); i++)
     {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, ch1[i]);
     }
