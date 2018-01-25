@@ -1,0 +1,32 @@
+CC=g++
+CFLAGS=-c -Wall
+
+all: test
+
+test: main.o Bullet.o Light.o Maze.o Model.o Player.o Robot.o Surface.o
+	$(CC) main.o Bullet.o Light.o Maze.o Model.o Player.o Robot.o
+	Surface.o -o test
+
+main.o: main.cpp
+	$(CC) $(CFLAGS) main.cpp
+
+Bullet.o: Bullet.cpp Bullet.h
+	$(CC) $(CFLAGS) Bullet.cpp
+
+Light.o: Light.cpp Light.o
+	$(CC) $(CFLAGS) Light.cpp
+
+Maze.o: Maze.cpp Maze.o
+	$(CC) $(CFLAGS) Maze.cpp
+
+Model.o: Model.cpp Model.o
+	$(CC) $(CFLAGS) Model.cpp
+
+Player.o: Player.cpp Player.cpp
+	$(CC) $(CFLAGS) Player.cpp
+
+Robot.o: Robot.cpp Robot.o
+	$(CC) $(CFLAGS) Robot.cpp
+
+Surface.o: Surface.cpp Surface.o
+	$(CC) $(CFLAGS) Surface.cpp
