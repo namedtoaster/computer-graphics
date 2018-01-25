@@ -31,6 +31,16 @@ CC=g++
 
 
 
+
+# The above commented out Makefile was an original attempt. I'm still
+# not exactly sure why it doesn't work. But according to a tutorial I
+# found online, what I have below is what will be used most of the
+# time. The thing that got me about this Makefile was that there were
+# no rules for compiling the object files. Apparently, GNU make is
+# smart enough to be able to do that for all the cpp (or c files, etc)
+# in the current directory. The only thing you need to do is create a
+# rule that links all object files together as shown below
+
 src = $(wildcard *.cpp)
 obj = $(src:.cpp=.o)
 
@@ -40,7 +50,9 @@ LDFLAGS = -lGL -lglut -lGLU
 # https://www.gnu.org/software/make/manual/make.html#Automatic-Variables
 # for explanation on what the $@ and @^ variables do.
 #
-# The
+# The '$@' variable is the string for the target (myprog in this case)
+# and the '$^' variable is the names of all the prerequisites with
+# spaces between all of them (the $(obj) variable in this case)
 
 myprog: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS)
