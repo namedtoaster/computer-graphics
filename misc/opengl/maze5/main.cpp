@@ -1,6 +1,6 @@
+#include <GL/glut.h>
 #include <cstdio>
 #include <cstdlib>
-#include <GL/glut.h>
 #include <iostream>
 #include <ctime>
 #include <cmath>
@@ -13,7 +13,7 @@
 #include "Constants.h"
 //#include "Maze.h"
 #include "Surface.h"
-//#include "Model.h"
+#include "Model.h"
 #include "Player.h"
 #include "Robot.h"
 //#include "Weapon.h"
@@ -141,14 +141,18 @@ void keyboard(unsigned char key, int x, int y)
 
 void specialkeyboard(int key, int x, int y)
 {
-    switch (key)
+  switch (key)
     {
-		case GLUT_KEY_UP: if ((-player.get_tz() + player.get_depth() / 2) < (maze.get_ty(player.get_row(), player.get_col())) || (!f))
-				  {
-					  maze.set_ty(-0.1f); bullet.set_tz(bullet.get_tz() - 0.1f); player.set_tz(player.get_tz() - 0.1f);
-				  }break;
-        case GLUT_KEY_DOWN: if ((-player.get_tz() - player.get_depth() / 2) > (maze.get_ty(player.get_row(), player.get_col()) - (CELL_H) + 1.34 / 2) || (!b))
-				  {
+    case GLUT_KEY_UP: if ((-player.get_tz() + player.get_depth() / 2)
+    < (maze.get_ty(player.get_row(), player.get_col())) || (!f))
+	{
+	  maze.set_ty(-0.1f); bullet.set_tz(bullet.get_tz() - 0.1f); player.set_tz(player.get_tz() - 0.1f);
+	}
+      break;
+    case GLUT_KEY_DOWN: if ((-player.get_tz() - player.get_depth() /
+    2) > (maze.get_ty(player.get_row(), player.get_col()) - (CELL_H) +
+    1.34 / 2) || (!b))
+	{
 					  maze.set_ty(0.1f); bullet.set_tz(bullet.get_tz() + 0.1f); player.set_tz(player.get_tz() + 0.1f);
 				  }break;
         case GLUT_KEY_RIGHT: if ((player.get_tx() + player.get_width() / 2) < (maze.get_tx(player.get_row(), player.get_col())) || (!r))

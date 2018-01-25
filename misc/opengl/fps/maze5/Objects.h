@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "Prototypes.h"
 #include "Light.h"
 #include "Model.h"

@@ -1,3 +1,4 @@
+#include <GL/glut.h>
 #include "Prototypes.h"
 #include "Light.h"
 #include "Model.h"
@@ -89,13 +90,7 @@ void draw_gun()
 
     // Move the gun to the bottom right of the screen
     glTranslatef(0.8f, -1.6f, 0.1f);
-	
-    // Draw each piece of the weapon
-    draw_gunbarrel();
-    draw_sight();
-    draw_pieces();
-    draw_hands();
-    draw_magazine();
+
 	
     glPopMatrix(); 
 }

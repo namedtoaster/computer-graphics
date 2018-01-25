@@ -1,36 +1,42 @@
 CC=g++
-CFLAGS=-c -Wall
-LIBS=-lGL -lGLU -lglut
+#CFLAGS=-c -Wall
+#LIBS=-lGL -lGLU -lglut -lX11 -lpng -lz -lm
+#OBJS=main.o Model.o Robot.o Maze.o Player.o Bullet.o
 
-all: test
+#all: test
 
-test: main.o Bullet.o Light.o Maze.o Model.o Player.o Robot.o Surface.o
-	$(CC) main.o Bullet.o Light.o Maze.o Model.o Player.o Robot.o
-	Surface.o -o test $(LIBS)
+#test: main.o Model.o Robot.o Maze.o Player.o Bullet.o
+#	$(CC) main.o Model.o Robot.o Maze.o Player.o Bullet.o -o test
 
-main.o: main.cpp Objects.h Room.h Constants.h Surface.h
-	$(CC) $(CFLAGS) main.cpp
+#main.o: main.cpp
+#	$(CC) $(CFLAGS) main.cpp $(LIBS)
 
-Bullet.o: Bullet.cpp Bullet.h Constants.h Prototypes.h
-	$(CC) $(CFLAGS) Bullet.cpp
+#Model.o: Model.cpp
+#	$(CC) $(CFLAGS) Model.cpp $(LIBS)
 
-Light.o: Light.cpp
-	$(CC) $(CFLAGS) Light.cpp
+#Robot.o: Robot.cpp
+#	$(CC) $(CFLAGS) Robot.cpp $(LIBS)
 
-Maze.o: Maze.cpp
-	$(CC) $(CFLAGS) Maze.cpp
+#Maze.o: Maze.cpp
+#	$(CC) $(CFLAGS) Maze.cpp $(LIBS)
 
-Model.o: Model.cpp
-	$(CC) $(CFLAGS) Model.cpp
+#Player.o: Player.cpp
+#	$(CC) $(CFLAGS) Player.cpp $(LIBS)
 
-Player.o: Player.cpp Player.cpp
-	$(CC) $(CFLAGS) Player.cpp
+#Bullet.o: Bullet.cpp
+#	$(CC) $(CFLAGS) Bullet.cpp $(LIBS)
 
-Robot.o: Robot.cpp
-	$(CC) $(CFLAGS) Robot.cpp
+#clean:
+#	rm *.o
 
-Surface.o: Surface.cpp
-	$(CC) $(CFLAGS) Surface.cpp
+src = $(wildcard *.cpp)
+obj = $(src:.cpp=.o)
 
+LDFLAGS = -lGL -lglut -lGLU
+
+myprog: $(obj)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+.PHONY: clean
 clean:
-	rm *o test
+	rm -f $(obj) myprog
