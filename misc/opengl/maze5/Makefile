@@ -29,10 +29,18 @@ CC=g++
 #clean:
 #	rm *.o
 
+
+
 src = $(wildcard *.cpp)
 obj = $(src:.cpp=.o)
 
 LDFLAGS = -lGL -lglut -lGLU
+
+# See
+# https://www.gnu.org/software/make/manual/make.html#Automatic-Variables
+# for explanation on what the $@ and @^ variables do.
+#
+# The
 
 myprog: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS)
